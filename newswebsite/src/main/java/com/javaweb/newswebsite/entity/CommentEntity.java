@@ -45,4 +45,12 @@ public class CommentEntity extends BaseEntity {
     public void setNewEntity(NewEntity newEntity) {
         this.newEntity = newEntity;
     }
+
+	public List<CommentChildEntity> getCommentChilds() {
+		return commentChilds;
+	}
+
+	public void setCommentChilds(List<CommentChildEntity> commentChilds) {
+		this.commentChilds = commentChilds;
+	}
 }
