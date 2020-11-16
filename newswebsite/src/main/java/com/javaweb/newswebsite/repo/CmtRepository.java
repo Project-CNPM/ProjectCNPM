@@ -8,5 +8,5 @@ import com.javaweb.newswebsite.entity.CommentEntity;
 
 public interface CmtRepository extends JpaRepository<CommentEntity, Long>{
 	void deleteUserById(Long id);
-	Optional<CommentEntity> findNewById(Long id);
+	Optional<CommentEntity> findCommentById(Long id);
 }

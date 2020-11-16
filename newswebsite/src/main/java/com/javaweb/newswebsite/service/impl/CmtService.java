@@ -29,7 +29,7 @@ public class CmtService implements ICmtService{
 		NewEntity newentities = newRepository.findNewById(dto.getNewId()).get();
         CommentEntity newCmtEntity = new CommentEntity();
         if(dto.getId() !=null){
-            CommentEntity oldCmtEntity = cmtRepository.findNewById(dto.getId()).get();
+            CommentEntity oldCmtEntity = cmtRepository.findCommentById(dto.getId()).get();
             newCmtEntity = cmtConverter.toEntity(dto, oldCmtEntity);
         }else {
             newCmtEntity = cmtConverter.toEntity(dto);
