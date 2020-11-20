@@ -40,10 +40,10 @@ public class NewAPI {
         model.setTotalPage((int) Math.ceil((double) model.getTotalItem() / limit));
         return model;
     }
-    @GetMapping(value = "/new/{id}")
-    public NewDTO getEmployeeById(@PathVariable("id") Long id){
-        return newService.findById(id);
-    }
+//    @GetMapping(value = "/new/{id}")
+//    public NewDTO getEmployeeById(@PathVariable("id") Long id){
+//        return newService.findById(id);
+//    }
 
     @PostMapping(value = "/new")
     public ResponseEntity<NewDTO> createNew(@RequestBody NewDTO model) {

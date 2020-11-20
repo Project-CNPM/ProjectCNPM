@@ -1,7 +1,11 @@
 package com.javaweb.newswebsite.service.impl;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.javaweb.newswebsite.converter.CmtChildConverter;
@@ -42,5 +46,40 @@ public class CmtChildService implements ICmtChildService{
 		for (long items : ids) {
 			cmtChildRepository.deleteById(items);
 		}		
+	}
+
+	@Override
+	public CmtChildDTO findById(Long id) {
+		CommentChildEntity entity= cmtChildRepository.findCommentById(id).get();
+        return cmtChildConverter.toDTO(entity);
+	}
+
+	@Override
+	public List<CmtChildDTO> findAll(Pageable pageable) {
+		List<CmtChildDTO> cmtChildDTO = new ArrayList<>();
+		List<CommentChildEntity> cmtChildEntity = cmtChildRepository.findAll(pageable).getContent();
+		for(CommentChildEntity item : cmtChildEntity) {
+			CmtChildDTO dto = cmtChildConverter.toDTO(item);
+			cmtChildDTO.add(dto);
+		}
+		return cmtChildDTO;
+	}
+
+	@Override
+	public int totalUser() {
+		return (int) cmtChildRepository.count();
+	}
+
+	@Override
+	public List<CmtChildDTO> findByKeyWord(String keyword, Pageable pageable) {
+		List<CmtChildDTO> cmtChildDTO = new ArrayList<>();
+		List<CommentChildEntity> cmtChildEntity =  cmtChildRepository.search(keyword, pageable);
+		if(keyword != null) {
+			for(CommentChildEntity item : cmtChildEntity) {
+				CmtChildDTO dto = cmtChildConverter.toDTO(item);
+				cmtChildDTO.add(dto);
+			}
+		}
+		return cmtChildDTO;
 	}
 }
