@@ -45,7 +45,7 @@ public class NewAPI {
         return newService.findById(id);
     }
 
-    @PostMapping(value =  "/new")
+    @PostMapping(value = "/new")
     public ResponseEntity<NewDTO> createNew(@RequestBody NewDTO model) {
 
         return new ResponseEntity<>(newService.save(model), HttpStatus.CREATED);
