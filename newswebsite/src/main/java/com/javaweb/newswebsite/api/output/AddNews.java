@@ -9,8 +9,8 @@ import com.javaweb.newswebsite.dto.NewDTO;
 
 public class AddNews {
 	 @PostMapping(value = "/new")
-	    public ResponseEntity<NewDTO> createNew(@RequestBody NewDTO model) {
-
+	    public ResponseEntity<NewDTO> createNew(@RequestBody NewDTO model)
+	 {
 	        return new ResponseEntity<>(newService.save(model), HttpStatus.CREATED);
 	    }
 }
