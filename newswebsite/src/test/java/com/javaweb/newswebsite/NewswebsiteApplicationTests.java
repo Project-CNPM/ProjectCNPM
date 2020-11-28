@@ -8,6 +8,7 @@ class NewswebsiteApplicationTests {
 
 	@Test
 	void contextLoads() {
+		int abc_abc;
 	}
 
 }
