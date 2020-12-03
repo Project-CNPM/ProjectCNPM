@@ -20,6 +20,16 @@ export default [
     }
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'User',
+    to: '/admin/categories',
+    icon: 'cil-speedometer',
+    badge: {
+      color: 'info',
+      text: 'NEW',
+    }
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },

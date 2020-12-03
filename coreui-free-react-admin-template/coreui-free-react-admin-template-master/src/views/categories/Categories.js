@@ -106,7 +106,7 @@ const Categories = () => {
           <div className="alert alert-success">{message}</div>
         )}
           <CDataTable
-       onRowClick={(item, index,detailsClick) => {
+         onRowClick={(item, index,detailsClick) => {
          console.log(detailsClick);
          if(detailsClick!=="show_details"&&detailsClick!=="details")
          history.push(`/admin/categories/${item.id}`);
