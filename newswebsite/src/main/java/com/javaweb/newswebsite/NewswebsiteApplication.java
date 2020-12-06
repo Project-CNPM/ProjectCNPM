@@ -16,11 +16,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //exclude = {SecurityAutoConfiguration.class }
 //tat' chuc nang tu dogn security va security cua trang actuator
-@SpringBootApplication(exclude = {
-		SecurityAutoConfiguration.class,
-		ManagementWebSecurityAutoConfiguration.class,
-
-})
+//exclude = {
+//		SecurityAutoConfiguration.class,
+//		ManagementWebSecurityAutoConfiguration.class,
+//
+//		})
+@SpringBootApplication
 public class NewswebsiteApplication implements ServletContextInitializer, WebMvcConfigurer {
 
 	public static void main(String[] args) {

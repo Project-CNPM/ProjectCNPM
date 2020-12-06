@@ -10,13 +10,15 @@ import { icons } from './assets/icons'
 
 import { Provider } from 'react-redux'
 import store from './store'
+import AuthenticationService from "./api/service/AuthenticationService.js";
+AuthenticationService.setupAxiosInterceptors();
 
 React.icons = icons
 
 ReactDOM.render(
   <Provider store={store}>
     <App/>
-  </Provider>, 
+  </Provider>,
   document.getElementById('root')
 );
 

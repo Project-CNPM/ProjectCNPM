@@ -17,37 +17,51 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { useState } from 'react'
-import DashboardService from '../../../api/service/DashboardService.js'
+import AuthenticationService from '../../../api/service/AuthenticationService.js'
 
 
 const Login = (props) => {
-   const [username, setUsername] = useState("ttphu");
+   const [username, setUsername] = useState("");
    const [password, setPassword] = useState("");
+   const [showSucessMessage, setShowSucessMessage] = useState(false);
+   const [hasLoginFailed, setHasLoginFailed] = useState(false);
 
    function loginClicked() {
     console.log(username);
     console.log(password);
+    AuthenticationService.executeJwtAuthenticationService(username,password)
+    .then((response)=>{
+      console.log(response);
+      AuthenticationService.registerSuccessfulLoginForJwt(
+        username,
+        response.data.token
+      );
+        props.history.push('/admin/dashboard')
 
-    if (username === "ttphu" && password === "123456") {
-      console.log("Login Sucess");
-      props.history.push('/admin/dashboard')
 
-
-    } else {
-
+    }).catch( () =>{
+      setShowSucessMessage(false);
+      setHasLoginFailed(true);
     }
+    )
   }
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
+
+
           <CCol md="8">
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
                   <CForm>
                     <h1>Login</h1>
+
                     <p className="text-muted">Sign In to your account</p>
+                    {hasLoginFailed && (
+                      <div className="alert alert-warning">Sai tên tài khoản hoặc mật khẩu</div>
+                    )}
                     <CInputGroup className="mb-3">
                       <CInputGroupPrepend>
                         <CInputGroupText>
