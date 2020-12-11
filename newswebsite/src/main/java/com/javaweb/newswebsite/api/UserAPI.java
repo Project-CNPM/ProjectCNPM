@@ -79,10 +79,19 @@ public class UserAPI {
 
 		return userOutPut;
 	}
-	@GetMapping(value = "/user/{id}")
-	public UserDTO getEmployeeById(@PathVariable("id") Long id){
-		return service.findById(id);
+//	@GetMapping(value = "/user/{id}")
+//	public UserDTO getEmployeeById(@PathVariable("id") Long id){
+//		return service.findById(id);
+//	}
+	@GetMapping(value = "/user/{by}/{keyword}")
+	public UserDTO getEmployeeByUsernameOrId(@PathVariable("by") String by,@PathVariable("keyword") Object key){
+
+		if(by.equals("id")){
+			return service.findById(Long.parseLong(key.toString()));
+		}
+		return service.findUserByUserName(key.toString());
 	}
+
 
 	
 	@GetMapping(value = "/user/statistics")

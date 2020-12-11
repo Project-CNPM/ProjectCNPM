@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.javaweb.newswebsite.dto.RoleDTO;
@@ -16,13 +17,15 @@ import com.javaweb.newswebsite.repo.RoleRepository;
 public class UserConverter {
 	@Autowired
 	private RoleRepository roleRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	RoleConverter roleConvert = new RoleConverter();
 
 	public UserEntity toEntity(UserDTO userDto) {
 		UserEntity userEntity = new UserEntity();
 
 		userEntity.setUserName(userDto.getUserName());
-		userEntity.setPassword(userDto.getPassword());
+		userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		userEntity.setFullName(userDto.getFullName());
 		userEntity.setJobTitle(userDto.getJobTitle());
 		userEntity.setEmail(userDto.getEmail());
@@ -30,7 +33,6 @@ public class UserConverter {
 		userEntity.setImageUrl(userDto.getImageUrl());
 		userEntity.setIntro(userDto.getIntro());
 		userEntity.setStatus(userDto.getStatus());
-
 		List<RoleEntity> enties = new ArrayList<RoleEntity>();
 		for (String item : userDto.getRoleCode()) {
 			enties.add(roleRepository.findByCode(item).get());

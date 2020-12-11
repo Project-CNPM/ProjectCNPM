@@ -108,6 +108,11 @@ public class UserService implements IUserService {
 		return  userConverter.toDTO(userEntity);
 	}
 
+	@Override
+	public UserDTO findUserByUserName(String username) {
+		UserEntity userEntity=userRepository.findUserByUserName(username).get();
+		return  userConverter.toDTO(userEntity);
+	}
 
 
 	@Override

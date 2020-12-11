@@ -24,5 +24,6 @@ public interface IUserService {
 	List<UserDTO> findByKeyWord(String keyword, Pageable pageable);
 	List<UserDTO> findAllByCreatedDateBetween(Date startDate, Date endDate);
 	UserDTO findById(Long id);
+	UserDTO findUserByUserName(String username);
 	
 }

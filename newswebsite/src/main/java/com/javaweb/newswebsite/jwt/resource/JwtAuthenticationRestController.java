@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.javaweb.newswebsite.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import com.javaweb.newswebsite.jwt.JwtUserDetails;
 @CrossOrigin(origins="http://localhost:4200")
 public class JwtAuthenticationRestController {
 
+
   @Value("${jwt.http.request.header}")
   private String tokenHeader;
 
@@ -49,7 +51,6 @@ public class JwtAuthenticationRestController {
     final UserDetails userDetails = jwtInMemoryUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
     final String token = jwtTokenUtil.generateToken(userDetails);
-
     return ResponseEntity.ok(new JwtTokenResponse(token));
   }
 
