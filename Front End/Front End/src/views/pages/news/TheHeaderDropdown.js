@@ -8,7 +8,7 @@ import {
   CImg
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import AuthenticationService from '../api/service/AuthenticationService.js'
+import AuthenticationService from '../../../api/service/AuthenticationService.js'
 
 const TheHeaderDropdown = (props) => {
   return (

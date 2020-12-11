@@ -3,6 +3,11 @@ import React from 'react'
 import {
   CLink
 } from '@coreui/react'
+import {
+  TheHeaderDropdown,
+
+}  from './index'
+import AuthenticationService from '../../../api/service/AuthenticationService.js'
 const Home = (props) => {
 
   return (
@@ -13,12 +18,19 @@ const Home = (props) => {
             <nav className="navbar navbar-expand-lg navbar-light">
               <div className="navbar-top">
                 <div className="d-flex justify-content-between align-items-center">
-                  <ul className="navbar-top-left-menu">
-                  </ul>
+                  <div>
+                    <a className="navbar-brand" href="#"
+                      ><img src="/assets/images/logo.svg" alt=""
+                    /></a>
+                  </div>
                   <ul className="navbar-top-right-menu">
                     <li className="nav-item">
                       <a href="" className="nav-link"><i className="mdi mdi-magnify"></i></a>
                     </li>
+
+                    {
+                    !AuthenticationService.isUserLoggedIn()?(
+                    <>
                     <li className="nav-item">
                     <CLink className="nav-link" href="/login">
                       Login
@@ -29,16 +41,16 @@ const Home = (props) => {
                       Register
                     </CLink>
                     </li>
+                    </>
+                    )
+                    :<TheHeaderDropdown/>
+                    }
                   </ul>
                 </div>
               </div>
               <div className="navbar-bottom">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <a className="navbar-brand" href="#"
-                      ><img src="/assets/images/logo.svg" alt=""
-                    /></a>
-                  </div>
+                <div className="d-flex justify-content-center align-items-center">
+
                   <div>
                     <button
                       className="navbar-toggler"
@@ -51,7 +63,7 @@ const Home = (props) => {
                       <span className="navbar-toggler-icon"></span>
                     </button>
                     <div
-                      className="navbar-collapse justify-content-center collapse"
+                      className="navbar-collapse justify-content-start collapse"
                       id="navbarSupportedContent"
                     >
                       <ul
@@ -82,23 +94,7 @@ const Home = (props) => {
                       </ul>
                     </div>
                   </div>
-                  <ul className="social-media">
-                    <li>
-                      <a href="#">
-                        <i className="mdi mdi-facebook"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i className="mdi mdi-youtube"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i className="mdi mdi-twitter"></i>
-                      </a>
-                    </li>
-                  </ul>
+
                 </div>
               </div>
             </nav>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CHeader,
@@ -9,21 +9,26 @@ import {
   CHeaderNavLink,
   CSubheader,
   CBreadcrumbRouter,
+  CToast,
+  CToastBody,
+  CToastHeader,
+  CToaster,
   CLink
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
+import AuthenticationService from '../api/service/AuthenticationService.js'
 // routes config
 import routes from '../routes'
-
 import {
   TheHeaderDropdown,
-  TheHeaderDropdownMssg,
-  TheHeaderDropdownNotif,
-  TheHeaderDropdownTasks
+  TheHeaderDropdownNotif
 }  from './index'
 
 const TheHeader = () => {
+
+  const [autohide, setAutohide] = useState(true)
+  const [autohideValue, setAutohideValue] = useState(5000)
+  const [fade, setFade] = useState(true)
   const dispatch = useDispatch()
   const sidebarShow = useSelector(state => state.sidebarShow)
 
@@ -38,7 +43,30 @@ const TheHeader = () => {
   }
 
   return (
+
     <CHeader withSubheader>
+      <CToaster
+    key={'toaster'}
+
+
+    >
+      <CToast
+
+      show={true}
+      //autohide={autohide}
+      // autohideValue={autohideValue}
+      fade={fade}
+       position="static"
+              >
+                <CToastHeader closeButton={true}>
+                  Thông báo
+                </CToastHeader>
+                <CToastBody>
+                  {`Xin chào ${AuthenticationService.getLoggedInUserName()}`}
+                </CToastBody>
+       </CToast>
+       </CToaster>
+
       <CToggler
         inHeader
         className="ml-md-3 d-lg-none"
@@ -55,10 +83,10 @@ const TheHeader = () => {
 
       <CHeaderNav className="d-md-down-none mr-auto">
         <CHeaderNavItem className="px-3" >
-          <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
+          <CHeaderNavLink to="/admin/dashboard">Dashboard</CHeaderNavLink>
         </CHeaderNavItem>
         <CHeaderNavItem  className="px-3">
-          <CHeaderNavLink to="/users">Users</CHeaderNavLink>
+          <CHeaderNavLink to="/admin/users">Users</CHeaderNavLink>
         </CHeaderNavItem>
         <CHeaderNavItem className="px-3">
           <CHeaderNavLink>Settings</CHeaderNavLink>
@@ -83,7 +111,7 @@ const TheHeader = () => {
             <CLink
               className="c-subheader-nav-link"
               aria-current="page"
-              to="/dashboard"
+              to="/admin/dashboard"
             >
               <CIcon name="cil-graph" alt="Dashboard" />&nbsp;Dashboard
             </CLink>

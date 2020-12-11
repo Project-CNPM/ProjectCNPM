@@ -29,9 +29,9 @@ const animatedComponents = makeAnimated();
   const id =props.match.params.id
 
   const items = [
-    { value: 'nguoi-dung', label: 'Nguoi dung' },
-    { value: 'quan-ly', label: 'Quan ly' },
-    { value: 'admin', label: 'Admin' }
+    { value: 'ROLE_USER', label: 'Nguoi dung' },
+    { value: 'ROLE_QUANLY', label: 'Quan ly' },
+    { value: 'ROLE_ADMIN', label: 'Admin' }
   ]
   const formik = useFormik({
     initialValues:{email, jobTitle,fullName,phone,imageUrl,intro,status,userName,password,roleCode},
@@ -282,7 +282,7 @@ useEffect(() => {
             </CCardBody>
             <CCardFooter>
               <CButton className="" type="submit" size="sm" color="primary"><CIcon name="cil-scrubber" /> Submit</CButton>
-              
+
             </CCardFooter>
             </CForm>
           </CCard>

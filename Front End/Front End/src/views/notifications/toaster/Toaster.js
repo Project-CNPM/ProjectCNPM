@@ -46,7 +46,7 @@ const Toaster = () => {
 
   const addToast = () => {
     setToasts([
-      ...toasts, 
+      ...toasts,
       { position, autohide: autohide && autohideValue, closeButton, fade }
     ])
   }

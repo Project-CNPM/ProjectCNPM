@@ -8,8 +8,12 @@ class UserDataService {
   }
   retrieveUser(id) {
   //  console.log("executed service");
-    return Axios.get(`${API_URL}/user/${id}`);
+    return Axios.get(`${API_URL}/user/id/${id}`);
   }
+  retrieveUserByUsername(username) {
+    //  console.log("executed service");
+      return Axios.get(`${API_URL}/user/username/${username}`);
+    }
   deleteUsers(id) {
    // console.log("executed service");
     return Axios.delete(`${API_URL}/user/${id}`);

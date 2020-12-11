@@ -18,7 +18,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { useState } from 'react'
 import AuthenticationService from '../../../api/service/AuthenticationService.js'
-
+import UserService from '../../../api/service/UserService.js'
 
 const Login = (props) => {
    const [username, setUsername] = useState("");
@@ -35,9 +35,16 @@ const Login = (props) => {
       AuthenticationService.registerSuccessfulLoginForJwt(
         username,
         response.data.token
-      );
-        props.history.push('/admin/dashboard')
+      )
+        UserService.retrieveUserByUsername(username).then((resp)=>{
+          console.log(resp.data)
+          let result=resp.data.role.filter((row)=>{
+            return row.code==="ROLE_ADMIN"||row.code==="ROLE_QUANLY"||row.code==="ROLE_NHANSU";
+          })
+          sessionStorage.setItem("ROLE",result[0]?result[0].code:"");
+        })
 
+        props.history.push('/admin/dashboard')
 
     }).catch( () =>{
       setShowSucessMessage(false);

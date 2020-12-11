@@ -28,13 +28,20 @@ class AuthenticationService {
   }
 
   logout() {
+    sessionStorage.removeItem("ROLE");
     sessionStorage.removeItem("USER_TOKEN");
     sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
 
   }
   isUserLoggedIn() {
     let user = sessionStorage.getItem("USER_TOKEN");
-    if (user === null) return false
+    if (user === null ) return false
+    return true
+  }
+  isAdmin(){
+    let user = sessionStorage.getItem("USER_TOKEN");
+    let role=sessionStorage.getItem("ROLE");
+    if (user === null || role==="" ) return false
     return true
   }
   getLoggedInUserName() {
