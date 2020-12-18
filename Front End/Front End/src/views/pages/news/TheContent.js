@@ -5,6 +5,7 @@ import {
   Switch
 } from 'react-router-dom'
 import {  CFade } from '@coreui/react'
+import AuthenticationService from "../../../api/service/AuthenticationService.js"
 
 // routes config
 import routes from './routes'
@@ -16,11 +17,34 @@ const loading = (
 )
 
 const TheContent = (props) => {
+  const isAuthenticated = () => {
+    //write your condition here
+    return AuthenticationService.isAdmin();
+  }
+
+
+  const UnauthenticatedRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+      !isAuthenticated()
+        ? <Component {...props} />
+        : <Redirect to='/' />
+    )} />
+  );
+
+
+  const AuthenticatedRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+      isAuthenticated()
+        ? <Component {...props} />
+        : <Redirect to='/login' />
+    )} />
+  );
   return (
 
           <Suspense fallback={loading}>
           <Switch>
             {routes.map((route, idx) => {
+             
               return route.component && (
                 <Route
                   key={idx}

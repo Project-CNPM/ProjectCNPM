@@ -11,6 +11,11 @@ class NewService {
     const data =  Axios.get(`${API_URL}/new?page=${page}&limit=${limit}&status=${status}`);
      return data;
    }
+   retrieveAllByStatus(status) {
+    // console.log("executed service");
+    const data =  Axios.get(`${API_URL}/new/status/${status}`);
+     return data;
+   }
    retrieveAllNewsWithCategory(page,limit,status) {
     // console.log("executed service");
     const data =  Axios.get(`${API_URL}/new/category?page=${page}&limit=${limit}&status=${status}`);

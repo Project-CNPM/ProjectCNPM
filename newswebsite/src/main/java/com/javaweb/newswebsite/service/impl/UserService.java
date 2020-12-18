@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.javaweb.newswebsite.converter.CommentConverter;
+import com.javaweb.newswebsite.dto.CommentDTO;
+import com.javaweb.newswebsite.entity.CommentEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
@@ -24,6 +27,9 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private UserConverter userConverter;
+
+	@Autowired
+	private CommentConverter commentConverter;
 
 	@Override
 	public UserDTO save(UserDTO userDto) {
@@ -112,6 +118,29 @@ public class UserService implements IUserService {
 	public UserDTO findUserByUserName(String username) {
 		UserEntity userEntity=userRepository.findUserByUserName(username).get();
 		return  userConverter.toDTO(userEntity);
+	}
+
+	@Override
+	public List<CommentDTO> getListCommentOfUser(String username) {
+		List<CommentDTO> commentDTOS = new ArrayList<>();
+		UserEntity userEntity=userRepository.findUserByUserName(username).get();
+		for(CommentEntity item : userEntity.getCommentEntityList()) {
+			CommentDTO dto = commentConverter.toDTO(item);
+			commentDTOS.add(dto);
+		}
+		return commentDTOS;
+	}
+
+	@Override
+	public List<UserDTO> findAllByStatus(Integer status) {
+		List<UserDTO> userDTO = new ArrayList<>();
+		List<UserEntity> userEntity = userRepository.findAllByStatus(status);
+		for(UserEntity item : userEntity) {
+			UserDTO dto = userConverter.toDTO(item);
+			userDTO.add(dto);
+		}
+		return userDTO;
+
 	}
 
 

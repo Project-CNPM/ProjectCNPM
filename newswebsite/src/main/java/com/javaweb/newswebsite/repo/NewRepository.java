@@ -17,5 +17,6 @@ public interface NewRepository extends JpaRepository<NewEntity,Long> {
          Date publicationTimeEnd);
 
  Page<NewEntity> findAllByStatus(Pageable var1,Integer status);
+ List<NewEntity> findAllByStatus(Integer status);
 }
 

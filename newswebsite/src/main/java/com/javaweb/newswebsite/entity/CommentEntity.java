@@ -12,7 +12,7 @@ public class CommentEntity extends BaseEntity {
     private String content;
 
     @Column(name = "status")
-    private String status;
+    private Integer status;
 
     @Column(name = "likes")
     private Long likes;
@@ -53,14 +53,13 @@ public class CommentEntity extends BaseEntity {
         this.content = content;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
-
 
     public NewEntity getNewEntity() {
         return newEntity;

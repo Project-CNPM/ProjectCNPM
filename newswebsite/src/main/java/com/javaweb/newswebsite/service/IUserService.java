@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.javaweb.newswebsite.dto.CommentDTO;
 import com.javaweb.newswebsite.entity.UserEntity;
 import org.springframework.data.domain.Pageable;
 
@@ -25,5 +26,6 @@ public interface IUserService {
 	List<UserDTO> findAllByCreatedDateBetween(Date startDate, Date endDate);
 	UserDTO findById(Long id);
 	UserDTO findUserByUserName(String username);
-	
+	List<CommentDTO> getListCommentOfUser(String username);
+	List<UserDTO> findAllByStatus(Integer status);
 }

@@ -3,6 +3,7 @@ package com.javaweb.newswebsite.api;
 import javax.servlet.http.HttpServletRequest;
 
 import com.javaweb.newswebsite.dto.NewDTO;
+import com.javaweb.newswebsite.dto.UserDTO;
 import org.springframework.data.domain.PageRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class CommentAPI {
 	@PostMapping(value = "/comment")
 	public CommentDTO createComment(@RequestBody CommentDTO model) {
 		model.setId(null);
+		model.setStatus(2);
+		model.setLikes(0L);
 		return commentService.save(model);
 	}
 	
@@ -51,7 +54,15 @@ public class CommentAPI {
 	public CommentDTO getCommentById(@PathVariable("id") Long id){
 		return commentService.findById(id);
 	}
-	
+
+    @GetMapping(value = "/comment/news/{id}")
+    public List<CommentDTO> getCommentByNewId(@PathVariable("id") Long id){
+	    return commentService.findAllByNewIdAndStatus(id,1);
+    }
+	@GetMapping(value = "/comment/status/{status}")
+	public List<CommentDTO> getListCommentByStatus(@PathVariable("status")Integer status){
+		return commentService.findAllByStatus(status);
+	}
 	@GetMapping(value = "/comment")
 	public CommentOutput showComment(@RequestParam("page") int page, @RequestParam("limit") int limit,@RequestParam(name="status", required = false)Integer status)
 	{

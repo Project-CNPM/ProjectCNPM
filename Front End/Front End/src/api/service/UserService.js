@@ -10,6 +10,15 @@ class UserDataService {
   //  console.log("executed service");
     return Axios.get(`${API_URL}/user/id/${id}`);
   }
+  retrieveAllByStatus(status) {
+    // console.log("executed service");
+    const data =  Axios.get(`${API_URL}/user/status/${status}`);
+     return data;
+   }
+  retrieveCommentOfUser(username) {
+    //  console.log("executed service");
+      return Axios.get(`${API_URL}/user/comment/${username}`);
+    }
   retrieveUserByUsername(username) {
     //  console.log("executed service");
       return Axios.get(`${API_URL}/user/username/${username}`);
@@ -22,9 +31,17 @@ class UserDataService {
     // console.log("executed service");
      return Axios.put(`${API_URL}/user/${id}`,user);
    }
+   changePassword(id,user) {
+    // console.log("executed service");
+     return Axios.put(`${API_URL}/user/changePassword/${id}`,user);
+   }
    createUser(user) {
     // console.log("executed service");
      return Axios.post(`${API_URL}/user`,user);
+   }
+   sendMail(mail) {
+    // console.log("executed service");
+     return Axios.post(`${API_URL}/sendEmail/${mail}`);
    }
 }
 export default new UserDataService();

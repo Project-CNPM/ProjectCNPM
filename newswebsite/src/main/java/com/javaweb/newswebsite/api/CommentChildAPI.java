@@ -28,6 +28,7 @@ public class CommentChildAPI {
 	@PostMapping(value = "/commentchild")
 	public CommentChildDTO createCommentChild(@RequestBody CommentChildDTO model) {
 		model.setId(null);
+		model.setStatus(1);
 		return commentchildService.save(model);
 	}
 	

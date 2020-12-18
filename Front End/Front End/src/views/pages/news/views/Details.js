@@ -1,20 +1,59 @@
 import React,{ useState, useEffect } from 'react'
 import CategoryService from "../../../../api/service/CategoryService.js"
+import UserService from "../../../../api/service/UserService.js"
 import NewService from "../../../../api/service/NewService.js"
+import AuthenticationService from "../../../../api/service/AuthenticationService.js"
+import CommentService from "../../../../api/service/CommentService.js"
+import CommentChildService from "../../../../api/service/CommentChildService.js"
 import {IMAGES_URL,THUMBNAIL_URL} from "../../../../Constants"
 import moment from 'moment'
 import parse from 'html-react-parser'
+import swal from 'sweetalert'
+import { useFormik } from "formik";
+import "./commentstyle.css"
+
 import {
-  CLink
+  CInput,
+  CLink,
+  CTextarea
 } from '@coreui/react'
 
 const Details = (props) => {
   const id =props.match.params.id
-  const [category, setCategory]=useState([])
   const [data, setData]=useState([])
   const [news, setNews]=useState([])
+  const [userData, setUserData]=useState([])
+  const [comments, setComments]=useState([])
+  const [commentChild, setCommentChild]=useState([])
+  const [commentId, setCommentId]=useState()
 
 
+  const formik = useFormik({
+     initialValues: {
+      content: '',
+      newId:id
+    },
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      onSubmitComment(values)
+    },
+    //  onSubmit: values => {
+    //    alert(JSON.stringify(values, null, 2));
+    //  },
+  });
+  const formikChild = useFormik({
+    initialValues: {
+     contentChild: '',
+     commentId:commentId
+   },
+   enableReinitialize: true,
+   onSubmit: (values) => {
+     onSubmitCommentChild(values)
+   },
+    // onSubmit: values => {
+    //   alert(JSON.stringify(values, null, 2));
+    // },
+ });
 
   useEffect(() => {
     function getNewData() {
@@ -23,20 +62,25 @@ const Details = (props) => {
           setData(response.data);
         })
       }
-
     }
-    function getCategoryData() {
+    function getCommentData() {
 
-      CategoryService.retrieveAllCategories().then((response) => {
-        setCategory(response.data);
-      })
-        .catch((err) => {
-          alert(err.message);
-        });
+        CommentService.retrieveCommentByNewsId(id).then((response) => {
+          setComments(response.data);
+
+        })
     }
+    function getUserData() {
+      UserService.retrieveUserByUsername(AuthenticationService.getLoggedInUserName()).then((response) => {
+          setUserData(response.data);
+          console.log(response.data)
+        })
+    }
+
+    getUserData()
     getNewData();
-    getCategoryData();
     getNewLatestData();
+    getCommentData();
 
   }, [id])
   function getNewLatestData(){
@@ -47,6 +91,30 @@ const Details = (props) => {
     .catch((err)=>{
       alert(err.message);
     });
+  }
+  function onSubmitComment(values){
+    let comment = {
+      content: values.content,
+      newId: values.newId,
+      userId:userData.id
+    }
+    CommentService.createComment(comment).then(()=>{
+      swal("Thành công", "Trước khi được đăng tải vui lòng chờ quản trị viên duyệt!", "success");
+      formik.setFieldValue("content","");
+
+    })
+
+  }
+  function onSubmitCommentChild(values){
+    let comment = {
+      content: values.contentChild,
+      commentCode: values.commentId
+    }
+    CommentChildService.createComment(comment).then(()=>{
+      swal("Thành công", "Trước khi được đăng tải vui lòng chờ quản trị viên duyệt!", "success");
+      formikChild.setFieldValue("contentChild","");
+    })
+
   }
 
 
@@ -69,23 +137,9 @@ const Details = (props) => {
                         {data && parse(`${data.content}`)}
 
                       </div>
-                      <div className="d-lg-flex">
-                        <span className="fs-16 font-weight-600 mr-2 mb-1"
-                          >Tags</span
-                        >
-                        <span className="badge badge-outline-dark mr-2 mb-1"
-                          >Trending</span
-                        >
-                        <span className="badge badge-outline-dark mr-2 mb-1"
-                          >Trending</span
-                        ><span className="badge badge-outline-dark mr-2 mb-1"
-                          >Trending</span
-                        ><span className="badge badge-outline-dark mr-2 mb-1"
-                          >Trending</span
-                        ><span className="badge badge-outline-dark mb-1"
-                          >Trending</span
-                        >
-                      </div>
+
+
+
                       <div className="post-comment-section">
                         <h3 className="font-weight-600">Related Posts</h3>
                         <div className="row">
@@ -131,143 +185,99 @@ const Details = (props) => {
                           </div>
                         </div>
 
-                        <div className="testimonial">
-                          <div
-                            className="d-lg-flex justify-content-between align-items-center"
-                          >
-                            <div className="d-flex align-items-center mb-3">
-                              <div className="rotate-img">
-                                <img
-                                  src="../assets/images/faces/face1.jpg"
-                                  alt="banner"
-                                  className="img-fluid img-rounded mr-3"
-                                />
-                              </div>
-                              <div>
-                                <p className="fs-12 mb-1 line-height-xs">
-                                  Of the Author
-                                </p>
-                                <p
-                                  className="fs-16 font-weight-600 mb-0 line-height-xs"
-                                >
-                                  Nout Golstein
-                                </p>
-                              </div>
-                            </div>
-                            <ul className="social-media mb-3">
-                              <li>
-                                <a href="#">
-                                  <i className="mdi mdi-facebook"></i>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <i className="mdi mdi-youtube"></i>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <i className="mdi mdi-twitter"></i>
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                          <p className="fs-12">
-                            Praesent facilisis vulputate venenatis. In facilisis
-                            placerat arcu, in tempor neque aliquet quis. Integer
-                            lacinia in ligula eu sodales. Proin non lorem
-                            iaculis, dictum lorem quis, bibendum leo.
-                          </p>
+                        <CTextarea className="block_input_texarea" id="content" name="content" onChange={formik.handleChange} value={formik.values.content || ""} rows="2" placeholder="What are you thinking?"></CTextarea>
+                        <div className="mar-top clearfix">
+                          <button className="btn btn-sm btn-primary pull-right" type="submit" onClick={formik.handleSubmit} value={formik.values.content}><i className="fa fa-pencil fa-fw"></i> Share</button>
                         </div>
+
                         <div className="comment-section">
-                          <h5 className="font-weight-600">Comments</h5>
-                          <div className="comment-box">
-                            <div className="d-flex align-items-center">
-                              <div className="rotate-img">
-                                <img
-                                  src="../assets/images/faces/face2.jpg"
-                                  alt="banner"
-                                  className="img-fluid img-rounded mr-3"
-                                />
+                        <h5 className="font-weight-600">Comments</h5>
+
+
+
+                          {
+                            comments.map((row)=>{
+                              return (
+                            <div className="media-block pad-all" key={row.id}>
+                            <a className="media-left" href="#"><img className="img-circle img-sm" alt="Profile Picture" src="https://bootdey.com/img/Content/avatar/avatar1.png"></img></a>
+                            <div className="media-body">
+                              <div className="mar-btm">
+                                <a href="#" className="btn-link text-semibold media-heading box-inline">{row.createdBy}</a>
+                                <p className="text-muted text-sm"><i className="fa fa-mobile fa-lg"></i> - From Mobile - {moment(row.createdDate).fromNow()}</p>
                               </div>
+                              <p>{row.content}</p>
+                              {/* <img className="img-responsive thumbnail" src="https://via.placeholder.com/400x300" alt="Image"></img> */}
+                              <div className="pad-ver">
+                                <span className="tag tag-sm"><i className="fa fa-heart text-danger"></i> {row.likes} Likes</span>
+                                <div className="btn-group">
+                                  <a className="btn btn-sm btn-default btn-hover-success" href="#"><i className="fa fa-thumbs-up"></i></a>
+                                  <a className="btn btn-sm btn-default btn-hover-danger" href="#"><i className="fa fa-thumbs-down"></i></a>
+                                </div>
+                                <a className="btn btn-sm btn-default btn-hover-primary" onClick={()=> {
+                                    if(commentId===row.id){
+                                      setCommentId(0)
+                                    }else{
+                                      setCommentId(row.id)
+                                    }
+
+
+                                 }}>Comment</a>
+
+                              </div>
+
+
+                                {
+                                  commentId===row.id?
+                                  (
+                                    <>
+                                    <br></br>
+                                    <div id={`formRep_${row.id}`}>
+                                    <CTextarea  className="block_input_texarea" id={`contentChild_${row.id}`} name="contentChild" onChange={formikChild.handleChange} value={formikChild.values.contentChild || ""} rows="2" placeholder="What are you thinking?"></CTextarea>
+                                    <div className="mar-top clearfix">
+                                      <button className="btn btn-sm btn-primary pull-right" onClick={formikChild.handleSubmit} type="submit"><i className="fa fa-pencil fa-fw"></i> Share</button>
+                                    </div>
+                                    </div>
+                                    </>
+                                  ):""
+                                }
+                                {(row.commentchild.length>0 && !commentChild.includes(row.id)) &&
+                                <p className="count-reply"><CLink  className="view_all_reply" onClick={()=>{
+                                  setCommentChild([...commentChild,row.id])
+                                }} ><span className="num_reply_cmt">{row.commentchild.length}</span> trả lời</CLink></p>
+                              }
+
+                              <hr></hr>
                               <div>
-                                <p className="fs-12 mb-1 line-height-xs">
-                                  24 Jul 2020
-                                </p>
-                                <p
-                                  className="fs-16 font-weight-600 mb-0 line-height-xs"
-                                >
-                                  Chigusa Kisa
-                                </p>
+                            {
+                            commentChild.includes(row.id) && row.commentchild.map((item)=>
+                            { return (<div className="media-block pad-all" key={item.id}>
+                            <a className="media-left" href="#"><img className="img-circle img-sm" alt="Profile Picture" src="https://bootdey.com/img/Content/avatar/avatar2.png"></img></a>
+                            <div className="media-body">
+                              <div className="mar-btm">
+                                <a href="#" className="btn-link text-semibold media-heading box-inline">{item.createdBy}</a>
+                                <p className="text-muted text-sm"><i className="fa fa-globe fa-lg"></i> - From Web - {moment(item.createdDate).fromNow()}</p>
+                              </div>
+                              <p>{item.content}</p>
+                              <div>
+                                <div className="btn-group">
+                                  <a className="btn btn-sm btn-default btn-hover-success" href="#"><i className="fa fa-thumbs-up"></i></a>
+                                  <a className="btn btn-sm btn-default btn-hover-danger" href="#"><i className="fa fa-thumbs-down"></i></a>
+                                </div>
+
                               </div>
                             </div>
-
-                            <p className="fs-12 mt-3">
-                              Praesent facilisis vulputate venenatis. In
-                              facilisis placerat arcu, in tempor neque aliquet
-                              quis. Integer lacinia in ligula eu sodales. Proin
-                              non lorem iaculis, dictum lorem quis, bibendum
-                              leo.
-                            </p>
+                            </div>)}) }
                           </div>
-                          <div className="comment-box from">
-                            <div className="d-flex align-items-center">
-                              <div className="rotate-img">
-                                <img
-                                  src="../assets/images/faces/face3.jpg"
-                                  alt="banner"
-                                  className="img-fluid img-rounded mr-3"
-                                />
-                              </div>
-                              <div>
-                                <p className="fs-12 mb-1 line-height-xs">
-                                  24 Jul 2020
-                                </p>
-                                <p
-                                  className="fs-16 font-weight-600 mb-0 line-height-xs"
-                                >
-                                  Mohsen Salehi
-                                </p>
-                              </div>
                             </div>
-
-                            <p className="fs-12 mt-3">
-                              Praesent facilisis vulputate venenatis. In
-                              facilisis placerat arcu, in tempor neque aliquet
-                              quis. Integer lacinia in ligula eu sodales. Proin
-                              non lorem iaculis, dictum lorem quis, bibendum
-                              leo.
-                            </p>
                           </div>
-                          <div className="comment-box mb-0">
-                            <div className="d-flex align-items-center">
-                              <div className="rotate-img">
-                                <img
-                                  src="../assets/images/faces/face3.jpg"
-                                  alt="banner"
-                                  className="img-fluid img-rounded mr-3"
-                                />
-                              </div>
-                              <div>
-                                <p className="fs-12 mb-1 line-height-xs">
-                                  24 Jul 2020
-                                </p>
-                                <p
-                                  className="fs-16 font-weight-600 mb-0 line-height-xs"
-                                >
-                                  Lucy Miller
-                                </p>
-                              </div>
-                            </div>
+                              )
+                            })
+                          }
 
-                            <p className="fs-12 mt-3">
-                              Praesent facilisis vulputate venenatis. In
-                              facilisis placerat arcu, in tempor neque aliquet
-                              quis. Integer lacinia in ligula eu sodales. Proin
-                              non lorem iaculis, dictum lorem quis, bibendum
-                              leo.
-                            </p>
-                          </div>
+
+
+
+
                         </div>
                       </div>
                     </div>
@@ -277,7 +287,7 @@ const Details = (props) => {
                       </h2>
                       {
                         news.map((item)=>(
-                      <div className="row">
+                      <div className="row" key={item.id}>
                         <div className="col-sm-12">
                           <div className="border-bottom pb-4 pt-4">
                             <div className="row">
@@ -310,56 +320,8 @@ const Details = (props) => {
 
 
 
-                      <div className="trending">
-                        <h2 className="mb-4 text-primary font-weight-600">
-                          Trending
-                        </h2>
-                        <div className="mb-4">
-                          <div className="rotate-img">
-                            <img
-                              src="../assets/images/inner/inner_10.jpg"
-                              alt="banner"
-                              className="img-fluid"
-                            />
-                          </div>
-                          <h3 className="mt-3 font-weight-600">
-                            Virus Kills Member Of Advising Iran’s Supreme
-                          </h3>
-                          <p className="fs-13 text-muted mb-0">
-                            <span className="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                        </div>
-                        <div className="mb-4">
-                          <div className="rotate-img">
-                            <img
-                              src="../assets/images/inner/inner_11.jpg"
-                              alt="banner"
-                              className="img-fluid"
-                            />
-                          </div>
-                          <h3 className="mt-3 font-weight-600">
-                            Virus Kills Member Of Advising Iran’s Supreme
-                          </h3>
-                          <p className="fs-13 text-muted mb-0">
-                            <span className="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                        </div>
-                        <div className="mb-4">
-                          <div className="rotate-img">
-                            <img
-                              src="../assets/images/inner/inner_12.jpg"
-                              alt="banner"
-                              className="img-fluid"
-                            />
-                          </div>
-                          <h3 className="mt-3 font-weight-600">
-                            Virus Kills Member Of Advising Iran’s Supreme
-                          </h3>
-                          <p className="fs-13 text-muted mb-0">
-                            <span className="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                        </div>
-                      </div>
+
+
                     </div>
                   </div>
                 </div>

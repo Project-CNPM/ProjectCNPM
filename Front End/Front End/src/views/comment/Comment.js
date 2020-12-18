@@ -13,10 +13,13 @@ import { CCard, CCardBody, CCardHeader, CCol, CRow, CForm,
 import CIcon from '@coreui/icons-react'
 import moment from 'moment'
 import CommentService from "../../api/service/CommentService.js"
+import UserService from "../../api/service/UserService.js"
+import AuthenticationService from "../../api/service/AuthenticationService.js"
 import { useFormik} from "formik";
   const Category =  (props)  =>  {
 
   const [data, setData]=useState([])
+  const [user, setUser]=useState([])
    let {content,status,newId}=data
   const id =props.match.params.id
 
@@ -41,7 +44,17 @@ useEffect(() => {
   }
 
   }
+  function getUserData(){
+
+      UserService.retrieveUserByUsername(AuthenticationService.getLoggedInUserName()).then((response) => {
+        setUser(response.data);
+
+  })
+
+
+  }
   getCommentData()
+  getUserData()
 
   }, [id])
 
@@ -51,7 +64,7 @@ useEffect(() => {
       content:values.content,
       status: values.status || 1,
       newId: values.newId,
-
+      userId:user.id
 
     }
     if(id === '-1'){
@@ -88,13 +101,15 @@ useEffect(() => {
                         <td>Content</td>
                         <td><strong>{data.content}</strong></td>
                         </tr>
+
                         <tr >
                         <td>NewId</td>
                         <td><strong>{data.newId}</strong></td>
                         </tr>
-
-
-
+                        <tr >
+                        <td>Created By</td>
+                        <td><strong>{data.createdBy}</strong></td>
+                        </tr>
                         <tr >
                         <td>Created Date</td>
                         <td><strong>{moment(data.createdDate).format("YYYY-MM-DD")}</strong></td>

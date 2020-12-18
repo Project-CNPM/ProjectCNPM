@@ -19,4 +19,5 @@ public interface INewService {
     List<NewDTO> findAllByCreatedDateBetween(
             Date publicationTimeStart,
             Date publicationTimeEnd);
+    List<NewDTO> findAllByStatus(Integer status);
 }

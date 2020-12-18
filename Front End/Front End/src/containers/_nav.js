@@ -10,6 +10,16 @@ export default [
     }
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'Notifications',
+    to: '/admin/notifications',
+    icon: 'cil-bell',
+    badge: {
+      color: 'info',
+      text: 'NEW',
+    }
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['Managers']
   },

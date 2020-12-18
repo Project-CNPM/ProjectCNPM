@@ -103,5 +103,16 @@ public class NewService implements INewService {
         return results;
     }
 
+    @Override
+    public List<NewDTO> findAllByStatus(Integer status) {
+        List<NewDTO> results = new ArrayList<>();
+        List<NewEntity> entities = newRepository.findAllByStatus(status);
+        for (NewEntity item: entities) {
+            NewDTO newDTO = newConverter.toDTO(item);
+            results.add(newDTO);
+        }
+        return results;
+    }
+
 
 }

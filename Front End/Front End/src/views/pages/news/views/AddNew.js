@@ -1,31 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React,{ useState, useEffect } from 'react'
+import AuthenticationService from "../../../../api/service/AuthenticationService.js"
 import {
-  CCard, CCardBody, CCardHeader, CCol, CRow, CForm,
+  CBreadcrumb,
+  CBreadcrumbItem,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CLink,
+  CCol,
+  CRow,
+  CNav,
+  CNavLink,
   CFormGroup,
-  CFormText,
-  CValidFeedback,
-  CInvalidFeedback,
-  CTextarea,
-  CInputFile,
-  CInput,
   CLabel,
+  CInput,
+  CButton,
+  CFormText,
+  CInputFile,
   CCardFooter,
   CSelect,
-  CButton
+  CForm
 
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import moment from 'moment'
-import NewService from "../../api/service/NewService.js"
-import CategoryService from "../../api/service/CategoryService.js"
-import UploadService from "../../api/service/UploadService.js"
+import NewService from "../../../../api/service/NewService.js"
+import CategoryService from "../../../../api/service/CategoryService.js"
+import UploadService from "../../../../api/service/UploadService.js"
 import { useFormik } from "formik";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
-const New = (props) => {
 
+const AddNew = (props) => {
+  const [showMessage, setShowMessage] = useState(false);
   const [data, setData] = useState([])
   const [category, setCategory] = useState([])
   let { title, content, shortDescription, thumbnail, status, likes, categoryCode} = data
@@ -44,14 +53,6 @@ const New = (props) => {
 
 
   useEffect(() => {
-    function getNewData() {
-      if (id !== '-1') {
-        NewService.retrieveNew(id).then((response) => {
-          setData(response.data);
-        })
-      }
-
-    }
     function getCategoryData() {
 
       CategoryService.retrieveAllCategories().then((response) => {
@@ -61,7 +62,7 @@ const New = (props) => {
           alert(err.message);
         });
     }
-    getNewData();
+
     getCategoryData();
 
   }, [id])
@@ -82,99 +83,63 @@ const New = (props) => {
           content: values.content,
           shortDescription: values.shortDescription,
           thumbnail: thumbnail || "",
-          likes: values.likes || 0,
-          status: values.status || 1,
+          likes: 1,
+          status: 2,
           categoryCode: values.categoryCode|| "tin-tuc"
 
         }
-        console.log(todo)
-
-        if (id === '-1') {
-
           NewService.createNew(todo)
             .then(() => props.history.push("/admin/news"))
-        } else {
-          NewService.updateNew(id, todo)
-            .then(() => props.history.push('/admin/news'))
-        }
+
       })
+  }
 
+  function loadBreadBrum(){
 
-
-
+    return (
+      <>
+      <CBreadcrumbItem>
+          <CLink to="/profile">{AuthenticationService.getLoggedInUserName()}</CLink>
+          </CBreadcrumbItem>
+      <CBreadcrumbItem >ADDNEW</CBreadcrumbItem>
+      </>
+    )
   }
 
   return (
     <>
-      { id !== '-1' ? (
-        <CRow>
-          <CCol lg={6}>
-            <CCard>
-              <CCardHeader>
-                New id: {id}
-              </CCardHeader>
-              <CCardBody>
-                <table className="table table-striped table-hover">
-                  <tbody>
-                    {
-                      data &&
-                      (
-                        <>
-                          <tr key={data.id}>
-                            <td>Title</td>
-                            <td><strong>{data.title}</strong></td>
-                          </tr>
-                          <tr >
-                            <td>shortDescription</td>
-                            <td><strong>{data.shortDescription}</strong></td>
-                          </tr>
-                          <tr>
-                            <td>Content</td>
-                            <td><strong>{data.content}</strong></td>
-                          </tr>
-                          <tr>
-                            <td>Likes</td>
-                            <td><strong>{data.likes}</strong></td>
-                          </tr>
-                          <tr>
-                            <td>Status</td>
-                            <td><strong>{data.status}</strong></td>
-                          </tr>
-                          <tr >
-                            <td>Created By</td>
-                            <td><strong>{data.createdBy}</strong></td>
-                          </tr>
-
-                          <tr >
-                            <td>Created Date</td>
-                            <td><strong>{moment(data.createdDate).format("YYYY-MM-DD")}</strong></td>
-                          </tr>
-                          <tr>
-                            <td>Modified Date</td>
-                            <td><strong>{moment(data.modifiedDate).format("YYYY-MM-DD")}</strong></td>
-                          </tr>
-
-                        </>
-                      )
-
-                    }
-                  </tbody>
-                </table>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        </CRow>
-      ) : ""}
       <CRow>
-        <CCol xs="12" md="12" >
-          <CCard>
+      <CCol xs="10">
+     <CCard>
+     <CCardHeader color="white">
+     <CBreadcrumb>
+       {loadBreadBrum()}
+      </CBreadcrumb>
+     </CCardHeader>
+     <CCardBody>
+       <CRow>
+        <CCol xs="3">
+       <CRow className="flex-column">
+       <CNav vertical>
+
+        <CNavLink to="/profile"  className="menu-item" >TÀI KHOẢN</CNavLink>
+        <CNavLink to="/password" className="menu-item " >ĐỔI MẬT KHẨU</CNavLink>
+
+        <CNavLink to="/comments" className="menu-item">HOẠT ĐỘNG BÌNH LUẬN</CNavLink>
+         <CNavLink to="/addnew"className="menu-item menu-item-active">GỬI BÀI VIẾT</CNavLink>
+        <CNavLink  to="/gopy" className="menu-item" >GÓP Ý</CNavLink>
+
+        </CNav>
+       </CRow>
+       </CCol>
+
+       <CCol xs="9">
+
+        <CRow>
+
+
             <CForm action="" method="post" onSubmit={formik.handleSubmit} className="form-horizontal">
-              <CCardHeader>
-                Form New
-              <small> id:{id}</small>
-              </CCardHeader>
-              <CCardBody>
-                
+
                 <CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="title">Title</CLabel>
@@ -195,16 +160,6 @@ const New = (props) => {
                     <CFormText></CFormText>
                   </CCol>
                 </CFormGroup>
-                {/* <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="thumbnail">Thumbnail</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput id="thumbnail" name="thumbnail" placeholder="thumbnail" onChange={formik.handleChange}
-             value={formik.values.thumbnail|| ""} />
-                    <CFormText></CFormText>
-                  </CCol>
-                </CFormGroup> */}
                 <CFormGroup row>
                   <CLabel col md="3" htmlFor="thumbnail">File input</CLabel>
                   <CCol xs="12" md="9">
@@ -216,28 +171,7 @@ const New = (props) => {
                   </CCol>
                 </CFormGroup>
 
-                <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="likes">Like</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput id="likes" type="number" name="likes" placeholder="likes" onChange={formik.handleChange}
-                      value={formik.values.likes || ""} />
-                    <CFormText></CFormText>
-                  </CCol>
-                </CFormGroup>
-                <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="select">Status</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <CSelect custom name="status" id="status" onChange={formik.handleChange} value={`${formik.values.status}` || "1"}>
-                      <option value="1">Active</option>
-                      <option value="2">Pending</option>
-                      <option value="3">Banned</option>
-                    </CSelect>
-                  </CCol>
-                </CFormGroup>
+
                 <CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="select">Category</CLabel>
@@ -285,20 +219,36 @@ const New = (props) => {
                     />
                   </CCol>
                 </CFormGroup>
-              </CCardBody>
-              <CCardFooter>
+
+
                 <CButton className="" type="submit" size="sm" color="primary"><CIcon name="cil-scrubber" /> Submit</CButton>
 
-              </CCardFooter>
             </CForm>
-          </CCard>
+
+
+       </CRow>
+
 
         </CCol>
 
-      </CRow>
-    </>
+       </CRow>
 
+
+
+
+     </CCardBody>
+     </CCard>
+
+     </CCol>
+     </CRow>
+
+
+
+
+
+
+    </>
   )
 }
 
-export default New
+export default AddNew

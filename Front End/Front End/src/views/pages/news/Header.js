@@ -78,15 +78,15 @@ const Home = (props) => {
                           <a className="nav-link" href="index.html">Home</a>
                         </li>
                         <li className="nav-item">
-                        <CLink className="nav-link" to="/register">
+                        <CLink className="nav-link" to="/category/tin-tuc">
                           TIN TỨC
                         </CLink>
                         </li>
                         <li className="nav-item">
-                          <a className="nav-link" href="pages/business.html">THỂ THAO</a>
+                          <CLink className="nav-link" to="/category/the-thao">THỂ THAO</CLink>
                         </li>
                         <li className="nav-item">
-                          <a className="nav-link" href="pages/sports.html">CÔNG NGHỆ</a>
+                          <a className="nav-link" to="/category/cong-nghe">CÔNG NGHỆ</a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link" href="pages/contactus.html">ABOUT US</a>

@@ -4,12 +4,20 @@ import java.util.List;
 
 public class CommentDTO extends AbstractDTO<CommentDTO> {
 	private String content;
-	private String status;
+	private Integer status;
 	private Long likes;
 	private Long newId;
+	private Long userId;
 	private List<CommentChildDTO> commentchild;
 
-	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public List<CommentChildDTO> getCommentchild() {
 		return commentchild;
 	}
@@ -39,11 +47,12 @@ public class CommentDTO extends AbstractDTO<CommentDTO> {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getStatus() {
+
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	
 }

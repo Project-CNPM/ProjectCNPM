@@ -1,6 +1,7 @@
 package com.javaweb.newswebsite.api;
 
 import com.javaweb.newswebsite.api.output.NewOutput;
+import com.javaweb.newswebsite.dto.CommentDTO;
 import com.javaweb.newswebsite.dto.NewDTO;
 import com.javaweb.newswebsite.service.INewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,12 @@ public class NewAPI {
     @GetMapping(value = "/new/category/{code}")
     public List<NewDTO> getNewById(@PathVariable("code") String code){
         return newService.findAllByCategoryAndStatus(code,1);
+    }
+
+    @GetMapping(value = "/new/status/{status}")
+    public List<NewDTO> getNewByStatus(@PathVariable("status")Integer status){
+
+        return newService.findAllByStatus(status);
     }
 
     @GetMapping(value = "/new/find")

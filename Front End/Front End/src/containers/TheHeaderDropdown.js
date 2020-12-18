@@ -5,7 +5,8 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-  CImg
+  CImg,
+  CLink
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import AuthenticationService from '../api/service/AuthenticationService.js'
@@ -41,13 +42,20 @@ const TheHeaderDropdown = (props) => {
         </CDropdownItem>
 
 
-        <CDropdownItem>
+        <CDropdownItem to="/comments">
           <CIcon name="cil-comment-square" className="mfe-2" />
           Bình luận
 
         </CDropdownItem>
+        <CDropdownItem to="/password">
+          <CIcon name="cil-check-circle" className="mfe-2" />
+          Đổi password
 
-        <CDropdownItem>
+        </CDropdownItem>
+
+        <CDropdownItem
+        to="/profile"
+        >
           <CIcon name="cil-user" className="mfe-2" />Cá nhân
         </CDropdownItem>
         <CDropdownItem divider />

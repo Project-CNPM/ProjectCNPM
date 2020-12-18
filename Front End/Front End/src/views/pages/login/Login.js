@@ -43,8 +43,9 @@ const Login = (props) => {
           })
           sessionStorage.setItem("ROLE",result[0]?result[0].code:"");
         })
+       
+        props.history.push('/home')
 
-        props.history.push('/admin/dashboard')
 
     }).catch( () =>{
       setShowSucessMessage(false);

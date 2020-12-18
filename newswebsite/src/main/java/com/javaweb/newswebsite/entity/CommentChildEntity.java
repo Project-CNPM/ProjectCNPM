@@ -10,7 +10,7 @@ public class CommentChildEntity extends BaseEntity {
     private String content;
 
     @Column(name = "status")
-    private String status;
+    private Integer status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
@@ -25,14 +25,13 @@ public class CommentChildEntity extends BaseEntity {
         this.content = content;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
-
 
     public CommentEntity getCommentEntity() {
         return commentEntity;

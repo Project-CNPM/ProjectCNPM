@@ -73,24 +73,33 @@ public class UserConverter {
 
 		//userEntity.setUserName(userDto.getUserName());
 		//userEntity.setPassword(userDto.getPassword());
+		if(userDto.getFullName()!=null)
 		userEntity.setFullName(userDto.getFullName());
+		if(userDto.getJobTitle()!=null)
 		userEntity.setJobTitle(userDto.getJobTitle());
+		if(userDto.getPhone()!=null)
 		userEntity.setPhone(userDto.getPhone());
+		if(userDto.getEmail()!=null)
 		userEntity.setEmail(userDto.getEmail());
+		if(userDto.getImageUrl()!=null)
 		userEntity.setImageUrl(userDto.getImageUrl());
+		if(userDto.getIntro()!=null)
 		userEntity.setIntro(userDto.getIntro());
+		if(userDto.getStatus()!=null)
 		userEntity.setStatus(userDto.getStatus());
-		List<RoleEntity> enties = new ArrayList<>();
-		
-		for(String item : userDto.getRoleCode()) {
-			enties.add(roleRepository.findByCode(item).get());
+		if( userDto.getRoleCode()!=null){
+			List<RoleEntity> enties = new ArrayList<>();
+			for(String item : userDto.getRoleCode()) {
+				enties.add(roleRepository.findByCode(item).get());
+			}
+			userEntity.setRoles(enties);
 		}
-		userEntity.setRoles(enties);
+
 		return userEntity;
 	}
 	
 	public UserEntity changePassword(UserDTO userDto, UserEntity userEntity) {
-		userEntity.setPassword(userDto.getPassword());
+		userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		return userEntity;
 	}
 	

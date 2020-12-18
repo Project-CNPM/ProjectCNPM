@@ -120,7 +120,7 @@ const Dashboard = (props) => {
               <h4 id="traffic" className="card-title mb-0">Traffic</h4>
               <div className="small text-muted">{format(new Date(), 'd-MM-yyyy')}</div>
             </CCol>
-            <CCol sm="7" className="d-none d-md-block">
+            {/* <CCol sm="7" className="d-none d-md-block">
               <CButton color="primary" className="float-right">
                 <CIcon name="cil-cloud-download"/>
               </CButton>
@@ -138,7 +138,7 @@ const Dashboard = (props) => {
                   ))
                 }
               </CButtonGroup>
-            </CCol>
+            </CCol> */}
           </CRow>
 
           {/* <MainChartExample style={{height: '300px', marginTop: '40px'}}/> */}

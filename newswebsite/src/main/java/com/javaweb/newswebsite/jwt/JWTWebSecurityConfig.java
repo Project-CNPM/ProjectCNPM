@@ -91,7 +91,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/**/**")
                 .and()
                 .ignoring()
-                .antMatchers(HttpMethod.GET,"/new**")
+                .antMatchers(HttpMethod.GET,"/new/**")
                 .and()
                 .ignoring()
                 .antMatchers(HttpMethod.GET,"/category**")
@@ -103,6 +103,19 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/ckfinder/**/**")
                 .and()
                 .ignoring()
-                .antMatchers("/userfiles/**/**");
+                .antMatchers("/userfiles/**/**")
+                .and()
+                .ignoring()
+                .antMatchers(HttpMethod.OPTIONS,"/user")
+                .and()
+                .ignoring()
+                .antMatchers(HttpMethod.POST,"/user")
+                .and()
+                .ignoring()
+                .antMatchers(HttpMethod.POST,"/sendEmail/**")
+                .and()
+                .ignoring()
+                .antMatchers(HttpMethod.OPTIONS,"/sendEmail/**");
+
     }
 }

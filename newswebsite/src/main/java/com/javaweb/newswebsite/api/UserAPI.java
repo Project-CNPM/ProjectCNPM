@@ -2,10 +2,12 @@ package com.javaweb.newswebsite.api;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.javaweb.newswebsite.dto.CommentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,15 +27,14 @@ public class UserAPI {
 	private IUserService service;
 
 	@PostMapping(value = "/user")
-	public UserDTO createNew(@RequestBody UserDTO model) {
+	public UserDTO createUser(@RequestBody UserDTO model) {
 		model.setId(null);
 		return service.save(model);
 	}
 
 	@PutMapping(value = "/user/{id}")
-	public UserDTO updateNew(@RequestBody UserDTO model, @PathVariable("id") Long id) {
+	public UserDTO updateUser(@RequestBody UserDTO model, @PathVariable("id") Long id) {
 		model.setId(id);
-
 		return service.save(model);
 	}
 
@@ -91,6 +92,16 @@ public class UserAPI {
 		}
 		return service.findUserByUserName(key.toString());
 	}
+	@GetMapping(value = "/user/comment/{userName}")
+	public List<CommentDTO> getListCommentOfUser(@PathVariable("userName") String userName){
+
+		return service.getListCommentOfUser(userName);
+	}
+
+	@GetMapping(value = "/user/status/{status}")
+	public List<UserDTO> getListUserByStatus(@PathVariable("status")Integer status){
+		return service.findAllByStatus(status);
+	}
 
 
 	
@@ -116,17 +127,12 @@ public class UserAPI {
 	
 	@PostMapping(value = "/user/register")
 	public UserDTO registerUser(@RequestBody UserDTO model) {
-		model.setRoleCode(new String[] {"khach-hang"});
+
 		return service.register(model);
 	}
+
 	
-	@PutMapping(value = "/user/edit/{id}")
-	public UserDTO editProfile(@RequestBody UserDTO model, @PathVariable("id") long id) {
-		model.setId(id);
-		model.setRoleCode(new String[] {"khach-hang"});
-		return service.save(model);
-	}
-	
+
 	@PutMapping(value = "/user/changePassword/{id}")
 	public UserDTO changePassword(@RequestBody UserDTO model, @PathVariable("id") long id) {
 		model.setId(id);

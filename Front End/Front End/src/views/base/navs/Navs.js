@@ -12,6 +12,7 @@ import {
   CNav,
   CNavItem,
   CNavLink
+
 } from '@coreui/react'
 
 const Navs = () => {

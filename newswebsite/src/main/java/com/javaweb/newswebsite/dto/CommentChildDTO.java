@@ -2,7 +2,7 @@ package com.javaweb.newswebsite.dto;
 
 public class CommentChildDTO extends AbstractDTO<CommentChildDTO> {
 	 private String content;
-	 private String status;
+	 private Integer status;
 	 private Long commentCode;
 	 
 	
@@ -18,11 +18,12 @@ public class CommentChildDTO extends AbstractDTO<CommentChildDTO> {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getStatus() {
+
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	 
 }
